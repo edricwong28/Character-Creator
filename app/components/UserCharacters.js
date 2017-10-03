@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 
+const ReservedProperties = ["comments","_id"];
+
 let testCharacters = [
 	{
 		name:"",
 		age:16,
-		gender:"male"
+		gender:"male",
+		comments:[]
 	},
 
 	{
@@ -36,7 +39,9 @@ class UserCharacters extends Component {
 		let traitsArr = [];
 
 		for(let prop in character) {
-			traitsArr.push({name:prop,value:character[prop]});
+			if(!ReservedProperties.includes(prop)) {
+				traitsArr.push({name:prop,value:character[prop]});
+			}
 		}
 
 		console.log(traitsArr);

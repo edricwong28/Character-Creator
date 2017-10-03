@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 const DefaultCharacteristics = ["name","age","gender"];
+const ReservedProperties = ["comments","_id"];
 
 class CharacterForm extends Component {
   state = {
@@ -125,6 +126,11 @@ class CharacterForm extends Component {
     // }
 
     if(defChars.includes(characteristic) || charArr.includes(characteristic)) {
+      return false;
+    }
+
+    if(ReservedProperties.includes(characteristic)) {
+      console.log("This Property is Reserved");
       return false;
     }
 
