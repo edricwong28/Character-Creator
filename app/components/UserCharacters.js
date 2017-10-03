@@ -30,15 +30,53 @@ class UserCharacters extends Component {
 		this.setState({characters:testCharacters});
 	}
 
-	displayCharacter() {
-		return (<div>Test</div>)
+	displayCharacter(character) {
+
+
+		let traitsArr = [];
+
+		for(let prop in character) {
+			traitsArr.push({name:prop,value:character[prop]});
+		}
+
+		console.log(traitsArr);
+
+		// let str = <div>Test</div>;
+
+		// {traitsArr.map(trait => ( 
+		// 	<div> {trait.name}: {trait.value} </div>
+		// ))}
+
+		// traitsArr.map(trait => ( 
+		// 	<div className="characterPanel"> {trait.name}: {trait.value} </div>
+		// ))
+
+		return (
+
+		traitsArr.map(trait => ( 
+			<div className="row">
+            	<div className="characterPanel"> {trait.name}: {trait.value} </div>
+          	</div>
+		))
+
+		)
 	}
 
 	render() {
 		return (
 			<div>
 				{this.state.characters.map(character => (
-					<div>{this.displayCharacter()}</div>
+					<div className="panel panel-default">
+						<div className="panel-heading panel-heading-custom">
+            				<h1 className="panel-title"> {character.name} </h1>
+          				</div>
+
+          				<div className="panel-body">
+          					{this.displayCharacter(character)}
+          				</div>
+					</div>
+
+					
 				))}
 
 			</div>
