@@ -17,9 +17,32 @@ let testCharacters = [
 ];
 
 class UserCharacters extends Component {
+
+	state = {
+		characters: []
+	}
+
+	componentDidMount() {
+		this.loadCharacters();
+	}
+
+	loadCharacters() {
+		this.setState({characters:testCharacters});
+	}
+
+	displayCharacter() {
+		return (<div>Test</div>)
+	}
+
 	render() {
 		return (
-			<div></div>
+			<div>
+				{this.state.characters.map(character => (
+					<div>{this.displayCharacter()}</div>
+				))}
+
+			</div>
+				
 		);
 	}
 }
