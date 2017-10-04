@@ -3,6 +3,22 @@ import React, { Component } from "react";
 const DefaultCharacteristics = ["name","age","gender"];
 const ReservedProperties = ["comments","_id"];
 
+let testCharacter = 
+  {
+    name:"Test-2",
+    age:16,
+    gender:"male",
+    comments:[{
+      message:"hello",
+      user_id:0,
+      createdAt:"testDate"
+    },{
+      message:"Yo",
+      user_id:0,
+      createdAt:"testDate"
+    }]
+  };
+
 class CharacterForm extends Component {
   state = {
     name:"",
@@ -20,6 +36,15 @@ class CharacterForm extends Component {
   //       [DefaultCharacteristics[i]]:""
   //     });
   // }
+
+  componentDidMount() {
+    if(this.props.characterKey) {
+
+      
+
+      this.fillForm(this.props.characterKey);
+    }
+  }
 
   // state = {
   //   characteristics:[
@@ -145,6 +170,11 @@ class CharacterForm extends Component {
   //   let str = `${characteristic}:`;
   // }
 
+  fillForm = key => {
+    let character = testCharacter;
+    this.setState(character);
+  }
+
   render() {
     return (
       <div>
@@ -178,8 +208,16 @@ class CharacterForm extends Component {
                 </div>
               ))}
 
-              <button className="btn btn-primary"  
-              onClick={this.handleFormSubmit}>Create</button>
+              {this.props.characterKey ? (
+                  <button className="btn btn-primary"  
+                  onClick={this.handleFormSubmit}>Edit</button>
+                ) : (
+                  <button className="btn btn-primary"  
+                  onClick={this.handleFormSubmit}>Create</button>
+                )
+              }
+
+              
 
             <form>
 
