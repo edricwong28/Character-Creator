@@ -1,11 +1,8 @@
-import React { Components } from 'react';
-import ReactDOM { Components } from 'react-dom';
-import Main { Components } from "./components/Main";
+import React, { Components } from 'react';
+import ReactDOM from 'react-dom';
+import Main from "./components/Main";
 
 ReactDOM.render(
 	<Main />, 
 
-document.getElementById("app"))
-
-
-import React, { Components } from 'react'
+document.getElementById("app"));

@@ -9,7 +9,7 @@ class Main extends React.Component {
 			<div className="pure-menu pure-menu-horizontal">
 		    	<ul className="pure-menu-list">
 			        <li class="pure-menu-item"><a href="#" class="pure-menu-link">Home</a></li>
-	        		<li class="pure-menu-item"><a href="#" class="pure-menu-link">Log out</a></li>
+	        		<li class="pure-menu-item"><a href="#" class="pure-menu-link">Log Out</a></li>
 	        		<li class="pure-menu-item" id="title">Management creator</li>
 	        	</ul>
 			</div>
@@ -48,6 +48,6 @@ class Main extends React.Component {
 		);
 	}
 }
-
+module.exports = Main;
 	
 
