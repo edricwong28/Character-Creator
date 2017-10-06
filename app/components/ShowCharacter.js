@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const ReservedProperties = ["comments","_id"];
+const ReservedProperties = ["comments","_id","isPublic"];
 
 let testCharacter = 
 	{
@@ -21,7 +21,8 @@ let testCharacter =
 class UserCharacters extends Component {
 
 	state = {
-		characterData: {}
+		characterData: {},
+		comment:""
 	}
 
 	componentDidMount() {
@@ -32,7 +33,14 @@ class UserCharacters extends Component {
 		this.setState({characterData:testCharacter});
 	}
 
-	displayCharacter(character) {
+	handleInputChange = event => {
+	    const { name, value } = event.target;
+	    this.setState({
+	      [name]: value
+		});
+	};
+
+	displayCharacter = character => {
 
 
 		let traitsArr = [];
@@ -45,15 +53,6 @@ class UserCharacters extends Component {
 
 		console.log(traitsArr);
 
-		// let str = <div>Test</div>;
-
-		// {traitsArr.map(trait => ( 
-		// 	<div> {trait.name}: {trait.value} </div>
-		// ))}
-
-		// traitsArr.map(trait => ( 
-		// 	<div className="characterPanel"> {trait.name}: {trait.value} </div>
-		// ))
 
 		return (
 
@@ -68,7 +67,7 @@ class UserCharacters extends Component {
 		)
 	}
 
-	displayComments(comments) {
+	displayComments = comments => {
 
 		if (!comments) {return}
 
@@ -84,6 +83,28 @@ class UserCharacters extends Component {
 		)
 	}
 
+	uploadComment = event => {
+		event.preventDefault();
+
+		if(this.state.comment === "") {
+			return
+		}
+
+		let newComment = {
+			message: this.state.comment,
+			userKey: this.props.userKey,
+			createdAt: "testDate"
+		}
+
+		console.log(newComment);
+
+		testCharacter.comments.push(newComment);
+
+		this.setState({
+			comment:""
+		})
+	}
+
 	render() {
 		return (
 			<div>
@@ -95,6 +116,19 @@ class UserCharacters extends Component {
           			<div className="panel-body">
           				{this.displayCharacter(this.state.characterData)}
           				{this.displayComments(this.state.characterData.comments)}
+          				{this.props.userKey ? (
+			              <form>
+			              	<input className="form-control" name="comment" type="text" 
+			                  onChange={this.handleInputChange}
+			                  value={this.state.comment}/>
+
+			                <button className="btn btn-primary" type="submit"  
+              				  onClick={this.uploadComment}>Comment</button>
+			              </form>
+			              ) : (
+			              <span></span>
+			              )
+			            }
           			</div>
 				</div>		
 
