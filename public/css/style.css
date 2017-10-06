@@ -34,6 +34,10 @@
 	width: 500px;
 }
 
+h2 {
+	font-family: Times Roman;
+}
+
 .footer {
 	width: 100%;
 	height: 100%;
