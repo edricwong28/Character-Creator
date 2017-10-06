@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const ReservedProperties = ["comments","_id"];
+const ReservedProperties = ["comments","_id","isPublic"];
 
 let testCharacters = [
 	{
@@ -15,9 +15,60 @@ let testCharacters = [
 		age:16,
 		gender:"male",
 		testProp:""
-	}
+	},
+
+	{
+	    name:"Test-2",
+	    age:16,
+	    gender:"male",
+	    species:"human",
+	    comments:[{
+	      message:"hello",
+	      user_id:0,
+	      createdAt:"testDate"
+	    },{
+	      message:"Yo",
+	      user_id:0,
+	      createdAt:"testDate"
+    }]
+  }
 
 ];
+
+let database = {
+	users:{
+		"AAAA":{
+			name:"Red"
+		},
+
+		"AAAB":{
+			name:"Blue"
+		}
+	},
+
+	characters:{
+		"AAAA":{
+			"0000":{
+				name:"Red",
+				age:10,
+				gender:"male"
+			},
+			"0001":{
+				name:"Bulb",
+				age:5,
+				gender:"male"
+			}
+		},
+
+		"AAAB":{
+			"0000":{
+				name:"Blue",
+				age:10,
+				gender:"female"
+			}
+		}
+	}
+}
 
 class UserCharacters extends Component {
 
@@ -26,14 +77,24 @@ class UserCharacters extends Component {
 	}
 
 	componentDidMount() {
-		this.loadCharacters();
+		if(this.props.userKey)
+			this.loadUserCharacters();
+
+		else {
+			this.loadPublicCharacters();
+		}
 	}
 
-	loadCharacters() {
+	loadUserCharacters() {
 		this.setState({characters:testCharacters});
 	}
 
-	displayCharacter(character) {
+	loadPublicCharacters() {
+		this.setState({characters:testCharacters});
+		// this.setState({characters:database.characters.AAAA});
+	}
+
+	displayCharacter = character => {
 
 
 		let traitsArr = [];
@@ -45,16 +106,6 @@ class UserCharacters extends Component {
 		}
 
 		console.log(traitsArr);
-
-		// let str = <div>Test</div>;
-
-		// {traitsArr.map(trait => ( 
-		// 	<div> {trait.name}: {trait.value} </div>
-		// ))}
-
-		// traitsArr.map(trait => ( 
-		// 	<div className="characterPanel"> {trait.name}: {trait.value} </div>
-		// ))
 
 		return (
 
@@ -73,7 +124,14 @@ class UserCharacters extends Component {
 				{this.state.characters.map(character => (
 					<div className="panel panel-default">
 						<div className="panel-heading panel-heading-custom">
-            				<h1 className="panel-title"> {character.name} </h1>
+            				
+
+            				{character.name ? (
+				              <h1 className="panel-title"> {character.name} </h1>
+				              ) : (
+				              <h1 className="panel-title"> Awaiting Name </h1>
+				              )
+				            }
           				</div>
 
           				<div className="panel-body">
