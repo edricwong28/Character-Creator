@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <style>
+    
 /* Full-width input fields */
 input[type=text], input[type=password] {
     width: 100%;
@@ -202,7 +203,7 @@ $("#login").click(function(event){
       console.log(newObject.email);
       console.log(newObject.password);
 
-      alert("TSuccessfully Signed Up!");
+      alert("Successfully Signed Up!");
 
       // clears the input boxes
       $("#email").val("");
