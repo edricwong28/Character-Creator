@@ -25,18 +25,8 @@ class CharacterForm extends Component {
     name:"",
     gender:"",
     age:"",
-    // characteristics:[{name:"name"},{name:"gender"},{name:"age"}],
-    defaultChars: DefaultCharacteristics,
-    characteristics:[],
     newProperty:""
   };
-
-  // componentDidMount() {
-  //   for (let i = 0; i < DefaultCharacteristics.length; i ++)
-  //     this.setState({
-  //       [DefaultCharacteristics[i]]:""
-  //     });
-  // }
 
   componentDidMount() {
     if(this.props.characterKey) {
@@ -47,20 +37,12 @@ class CharacterForm extends Component {
     }
   }
 
-  // state = {
-  //   characteristics:[
-  //     {'name':""},
-  //     {'gender':""},
-  //     {'age':""}
-  //   ]
-  // };
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
-    // console.log(this.state);
   };
 
   handleFormSubmit = event => {
@@ -72,7 +54,10 @@ class CharacterForm extends Component {
     let isEmpty = true;
 
     for(let key in stateObj) {
-      if(key && key !== "characteristics" && key !== "newProperty" && key !== "defaultChars") {
+      if(key 
+        && key !== "newProperty" 
+        && (!!stateObj[key] || stateObj[key] === '' || stateObj[key] === 0) ) 
+      {
         if(stateObj[key]) {
           isEmpty = false;
         }
@@ -87,9 +72,6 @@ class CharacterForm extends Component {
     console.log(output);
 
     this.setState({
-      // name:"",
-      // gender:"",
-      // age:"",
       newProperty:""
     });    
   };
@@ -97,17 +79,13 @@ class CharacterForm extends Component {
   addProperty = event => {
     event.preventDefault();
 
-    let charArr = this.state.characteristics;
     let newProp = this.state.newProperty;
 
     // console.log(this.isUniqueCharacteristic(newPropObj));
 
     if(this.isUniqueCharacteristic(newProp) && this.state.newProperty !== "") {
 
-      charArr.push(newProp);
-
       this.setState({
-        characteristics: charArr,
         [newProp]:"",
         newProperty:""
       });
@@ -125,29 +103,6 @@ class CharacterForm extends Component {
 
   deleteProperty = characteristic => {
 
-    // let stateObj = this.state;
-
-    // let charArr = this.state.characteristics;
-
-    // // for (let i = 0; i<charArr; i++) {
-    // //   if (charArr[i] === characteristic) {
-    // //     charArr.splice(i,1);
-    // //     return;
-    // //   }
-    // // }
-
-    // charArr.splice(charArr.indexOf(characteristic),1);
-
-    // this.setState({
-    //   characteristics:charArr
-    // });
-
-    // delete stateObj[characteristic.name];
-
-    // console.log(stateObj);
-
-    // this.setState(stateObj);
-
     this.setState({
       [characteristic]:undefined
     })
@@ -155,18 +110,6 @@ class CharacterForm extends Component {
   };
 
   isUniqueCharacteristic = characteristic => {
-    // let defChars = this.state.defaultChars
-    // let charArr = this.state.characteristics;
-
-    // // for (let i = 0; i<charArr.length; i++) {
-    // //   if (characteristic === charArr[i]) {
-    // //     return false;
-    // //   }
-    // // }
-
-    // if(defChars.includes(characteristic) || charArr.includes(characteristic)) {
-    //   return false;
-    // }
 
     if(ReservedProperties.includes(characteristic)) {
       console.log("This Property is Reserved");
@@ -186,14 +129,6 @@ class CharacterForm extends Component {
     return true;
   };
 
-  // getPropertyValue = characteristic => {
-  //   let state = this.state;
-  //   let defChars = this.state.defaultChars
-  //   let charArr = this.state.characteristics;
-
-  //   let str = `${characteristic}:`;
-  // }
-
   fillForm = key => {
     let character = testCharacter;
     this.setState(character);
@@ -204,11 +139,9 @@ class CharacterForm extends Component {
     let formComps = [];
 
     for (let key in stateObj) {
-      if(key !== "characteristics" 
-          && key !== "newProperty" 
-          && key !== "defaultChars" 
-          && key !== "comments"
-          && (!!stateObj[key] || stateObj[key] === '')
+      if(key !== "newProperty" 
+        && key !== "comments"
+        && (!!stateObj[key] || stateObj[key] === '')
       ) {
         formComps.push({name:key,value:stateObj[key]});
       }
@@ -243,8 +176,14 @@ class CharacterForm extends Component {
     return (
       <div>
         <div className="panel panel-default">
+
           <div className="panel-heading panel-heading-custom">
-            <h1 className="panel-title"> Search </h1>
+            {this.props.characterKey ? (
+              <h1 className="panel-title"> Edit </h1>
+              ) : (
+              <h1 className="panel-title"> Create </h1>
+              )
+            }
           </div>
 
           <div className="panel-body">
@@ -280,39 +219,5 @@ class CharacterForm extends Component {
     );
   }
 }
-
-              // {this.state.defaultChars.map(characteristic => (
-              //   <div key={characteristic} className="form-group">
-              //     <label htmlFor={characteristic}>{characteristic}</label>
-              //     <input className="form-control" name={characteristic} type="text" 
-              //     onChange={this.handleInputChange}
-              //     value={this.state[characteristic]}/>
-              //   </div>
-              // ))}
-
-              // {this.state.characteristics.map(characteristic => (
-              //   <div key={characteristic} className="form-group">
-              //     <label htmlFor={characteristic}>{characteristic}</label>
-              //     <input className="form-control" name={characteristic} type="text" 
-              //     onChange={this.handleInputChange}
-              //     value={this.state[characteristic]}/>
-
-              //     <button className="btn btn-primary"
-              //     onClick={() => this.deleteProperty(characteristic)}
-              //     > Delete 
-              //     </button>
-              //   </div>
-              // ))}
-
-              // {this.props.characterKey ? (
-              //     <button className="btn btn-primary"  
-              //     onClick={this.handleFormSubmit}>Edit</button>
-              //   ) : (
-              //     <button className="btn btn-primary"  
-              //     onClick={this.handleFormSubmit}>Create</button>
-              //   )
-              // }
-
-
 
 export default CharacterForm;
