@@ -8,6 +8,7 @@ let testCharacter =
     name:"Test-2",
     age:16,
     gender:"male",
+    species:"human",
     comments:[{
       message:"hello",
       user_id:0,
@@ -40,7 +41,7 @@ class CharacterForm extends Component {
   componentDidMount() {
     if(this.props.characterKey) {
 
-      
+
 
       this.fillForm(this.props.characterKey);
     }
@@ -79,14 +80,16 @@ class CharacterForm extends Component {
       }
     }
 
-    if (!isEmpty) {
-      console.log(output);
+    if (isEmpty) {
+      return
     }
 
+    console.log(output);
+
     this.setState({
-      name:"",
-      gender:"",
-      age:"",
+      // name:"",
+      // gender:"",
+      // age:"",
       newProperty:""
     });    
   };
@@ -117,14 +120,14 @@ class CharacterForm extends Component {
       });
     }
 
-    console.log(this.state);
+    // console.log(this.state);
   };
 
   deleteProperty = characteristic => {
 
-    console.log(characteristic);
+    // let stateObj = this.state;
 
-    let charArr = this.state.characteristics;
+    // let charArr = this.state.characteristics;
 
     // // for (let i = 0; i<charArr; i++) {
     // //   if (charArr[i] === characteristic) {
@@ -133,31 +136,52 @@ class CharacterForm extends Component {
     // //   }
     // // }
 
-    charArr.splice(charArr.indexOf(characteristic),1);
+    // charArr.splice(charArr.indexOf(characteristic),1);
+
+    // this.setState({
+    //   characteristics:charArr
+    // });
+
+    // delete stateObj[characteristic.name];
+
+    // console.log(stateObj);
+
+    // this.setState(stateObj);
 
     this.setState({
-      characteristics:charArr
-    });
+      [characteristic]:undefined
+    })
+
   };
 
   isUniqueCharacteristic = characteristic => {
-    let defChars = this.state.defaultChars
-    let charArr = this.state.characteristics;
+    // let defChars = this.state.defaultChars
+    // let charArr = this.state.characteristics;
 
-    // for (let i = 0; i<charArr.length; i++) {
-    //   if (characteristic === charArr[i]) {
-    //     return false;
-    //   }
+    // // for (let i = 0; i<charArr.length; i++) {
+    // //   if (characteristic === charArr[i]) {
+    // //     return false;
+    // //   }
+    // // }
+
+    // if(defChars.includes(characteristic) || charArr.includes(characteristic)) {
+    //   return false;
     // }
-
-    if(defChars.includes(characteristic) || charArr.includes(characteristic)) {
-      return false;
-    }
 
     if(ReservedProperties.includes(characteristic)) {
       console.log("This Property is Reserved");
       return false;
     }
+
+    let stateObj = this.state;
+
+    if(stateObj[characteristic]) {
+      return false;
+    }
+
+    this.setState({
+      [characteristic]:""
+    });
 
     return true;
   };
@@ -173,6 +197,46 @@ class CharacterForm extends Component {
   fillForm = key => {
     let character = testCharacter;
     this.setState(character);
+  };
+
+  createForm = () => {
+    let stateObj = this.state;
+    let formComps = [];
+
+    for (let key in stateObj) {
+      if(key !== "characteristics" 
+          && key !== "newProperty" 
+          && key !== "defaultChars" 
+          && key !== "comments"
+          && (!!stateObj[key] || stateObj[key] === '')
+      ) {
+        formComps.push({name:key,value:stateObj[key]});
+      }
+    }
+
+    // console.log(formComps);
+
+
+    return (
+      formComps.map(characteristic => (
+      <div key={characteristic.name} className="form-group">
+          <label htmlFor={characteristic.name}>{characteristic.name}</label>
+          <input className="form-control" name={characteristic.name} type="text" 
+            onChange={this.handleInputChange}
+            value={this.state[characteristic.name]}/>
+
+          {!DefaultCharacteristics.includes(characteristic.name) ? (
+              <button className="btn btn-primary"
+                onClick={() => this.deleteProperty(characteristic.name)}
+                > Delete 
+              </button>
+            ):(
+              <span></span>
+            )
+          }
+      </div>
+      ))
+    )
   }
 
   render() {
@@ -185,39 +249,16 @@ class CharacterForm extends Component {
 
           <div className="panel-body">
 
-              {this.state.defaultChars.map(characteristic => (
-                <div key={characteristic} className="form-group">
-                  <label htmlFor={characteristic}>{characteristic}</label>
-                  <input className="form-control" name={characteristic} type="text" 
-                  onChange={this.handleInputChange}
-                  value={this.state[characteristic]}/>
-                </div>
-              ))}
+            {this.createForm()}
 
-              {this.state.characteristics.map(characteristic => (
-                <div key={characteristic} className="form-group">
-                  <label htmlFor={characteristic}>{characteristic}</label>
-                  <input className="form-control" name={characteristic} type="text" 
-                  onChange={this.handleInputChange}
-                  value={this.state[characteristic]}/>
-
-                  <button className="btn btn-primary"
-                  onClick={() => this.deleteProperty(characteristic)}
-                  > Delete 
-                  </button>
-                </div>
-              ))}
-
-              {this.props.characterKey ? (
-                  <button className="btn btn-primary"  
-                  onClick={this.handleFormSubmit}>Edit</button>
-                ) : (
-                  <button className="btn btn-primary"  
-                  onClick={this.handleFormSubmit}>Create</button>
-                )
-              }
-
-              
+            {this.props.characterKey ? (
+              <button className="btn btn-primary"  
+                onClick={this.handleFormSubmit}>Edit</button>
+              ) : (
+              <button className="btn btn-primary"  
+                onClick={this.handleFormSubmit}>Create</button>
+              )
+            }
 
             <form>
 
@@ -239,5 +280,39 @@ class CharacterForm extends Component {
     );
   }
 }
+
+              // {this.state.defaultChars.map(characteristic => (
+              //   <div key={characteristic} className="form-group">
+              //     <label htmlFor={characteristic}>{characteristic}</label>
+              //     <input className="form-control" name={characteristic} type="text" 
+              //     onChange={this.handleInputChange}
+              //     value={this.state[characteristic]}/>
+              //   </div>
+              // ))}
+
+              // {this.state.characteristics.map(characteristic => (
+              //   <div key={characteristic} className="form-group">
+              //     <label htmlFor={characteristic}>{characteristic}</label>
+              //     <input className="form-control" name={characteristic} type="text" 
+              //     onChange={this.handleInputChange}
+              //     value={this.state[characteristic]}/>
+
+              //     <button className="btn btn-primary"
+              //     onClick={() => this.deleteProperty(characteristic)}
+              //     > Delete 
+              //     </button>
+              //   </div>
+              // ))}
+
+              // {this.props.characterKey ? (
+              //     <button className="btn btn-primary"  
+              //     onClick={this.handleFormSubmit}>Edit</button>
+              //   ) : (
+              //     <button className="btn btn-primary"  
+              //     onClick={this.handleFormSubmit}>Create</button>
+              //   )
+              // }
+
+
 
 export default CharacterForm;
