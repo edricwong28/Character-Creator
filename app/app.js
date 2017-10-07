@@ -1,8 +1,10 @@
 import React, { Components } from 'react';
 import ReactDOM from 'react-dom';
 import Main from "./components/Main";
+import Welcome from ."/components/Welcome"
 
 ReactDOM.render(
-	<Main />, 
+	<Welcome />
+	<Main />,
 
 document.getElementById("app"));
