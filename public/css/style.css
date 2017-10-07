@@ -7,12 +7,23 @@
 	overflow: hidden;
 	display: block;
 	font-size: 35px;
-	font-family: Times Roman;
+	font-family: Times Roman; 
+	background-image: url("images/blueGeometric.jpg");
 }
 
+/*Color change for the menu links*/
+.pure-menu-link {
+	color: white;
+}
+/*Management Creator*/
 #title{
 	float: right;
 	padding: .5em 1em;
+}
+
+/*Body*/
+.pure-g {
+	background-image: url("images/colorfulGeometric.jpg");
 }
 
 /*wrapper for 'welcome back'*/
@@ -48,4 +59,6 @@ h2 {
 	display: block;
 	padding-top: 10px;
 	margin-top: 20px;
+	background-image: url("images/blueGeometric.jpg");
+
 }
