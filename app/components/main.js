@@ -19,12 +19,12 @@ class Main extends React.Component {
 					<div className ="content-wrapper">
 						<div className="content">
 						 <h2 className="content-head is-center">
-						  Welcome back user</h2>
+						 <b> Welcome back user </b></h2>
 							<div className="buttons">
-								<a className="button-error pure-button" href="#">Create character</a>
+								<a className="button-error pure-button" href="createCharacter.js">Create character</a>
 								<br></br>
 								<br></br>
-								<a className="button-error pure-button" href="#">View other users characters</a>
+								<a className="button-error pure-button" href="forum.js">View other users characters</a>
 							</div>
 						</div>
 					</div>
