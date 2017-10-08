@@ -18,7 +18,7 @@ app.use(express.static('./public'));
 // 		console.log(err)
 // });
 
-app.get('/', function(req, res, err){
+app.get('*', function(req, res, err){
 	res.sendFile(__dirname + '/public/html/index.html');
 		console.log(err);
 });
@@ -28,10 +28,10 @@ app.get('/', function(req, res, err){
 // 		console.log(err);
 // });
 
-app.get('/forum', function(req, res, err){
-	res.sendFile(__dirname + '/public/html/forum.html');
-		console.log(err);
-});
+// app.get('/forum', function(req, res, err){
+// 	res.sendFile(__dirname + '/public/html/forum.html');
+// 		console.log(err);
+// });
 
 app.listen(3000, function() {
 	console.log('app running on port 3000')
