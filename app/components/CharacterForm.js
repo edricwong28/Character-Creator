@@ -2,7 +2,7 @@ import React, { Component } from "react";
 const database = require("./firebase.js");
 
 const DefaultCharacteristics = ["name","age","gender"];
-const ReservedProperties = ["comments","_id","isPublic"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt"];
 
 let testCharacter = 
   {
@@ -57,12 +57,20 @@ class CharacterForm extends Component {
     for(let key in stateObj) {
       if(key 
         && key !== "newProperty" 
-        && (!!stateObj[key] || stateObj[key] === '' || stateObj[key] === 0) ) 
-      {
-        if(stateObj[key]) {
+        // && (!!stateObj[key] || stateObj[key] === '' || stateObj[key] === 0) ) 
+        && stateObj[key] !== undefined
+      ){
+
+        if((stateObj[key] + "").trim() !== "") {
           isEmpty = false;
         }
-        output[key] = stateObj[key];
+        
+        output[key] = (stateObj[key] + "").trim();
+      }
+
+      else if (stateObj[key] === undefined) {
+        output[key] = null;
+        isEmpty = false;
       }
     }
 
@@ -91,6 +99,43 @@ class CharacterForm extends Component {
 
   handleEdit = event => {
     event.preventDefault();
+
+    let stateObj = this.state;
+    let output = {};
+
+    let isEmpty = true;
+
+    for(let key in stateObj) {
+      if(key 
+        && key !== "newProperty" 
+        && !ReservedProperties.includes(key)
+        // && (!!stateObj[key] || stateObj[key] === '' || stateObj[key] === 0) ) 
+        && stateObj[key] !== undefined
+      ){
+        if((stateObj[key] + "").trim() !== "") {
+          isEmpty = false;
+        }
+
+        output[key] = (stateObj[key] + "").trim();
+      }
+
+      else if (stateObj[key] === undefined) {
+        output[key] = null;
+        isEmpty = false;
+      }
+    }
+
+    if (isEmpty) {
+      return
+    }
+
+    let currentTime = Date.now();
+
+    output.updatedAt = currentTime;
+
+    console.log(output);
+    database.ref(`characters/${this.props.userKey}/${this.props.characterKey}`).update(output);
+    database.ref(`allCharacters/${this.props.characterKey}`).update(output);
   }
 
   addProperty = event => {
@@ -147,37 +192,40 @@ class CharacterForm extends Component {
   };
 
   fillForm = key => {
-    let character = testCharacter;
-    this.setState(character);
+    database.ref(`characters/${this.props.userKey}/${this.props.characterKey}`).once('value').then(char => {
+      // console.log(char.val());
+      this.setState(char.val());
+    })
   };
 
   createForm = () => {
     let stateObj = this.state;
-    let formComps = [];
+    let characteristics = [];
 
     for (let key in stateObj) {
       if(key !== "newProperty" 
-        && key !== "comments"
-        && (!!stateObj[key] || stateObj[key] === '')
+        && !ReservedProperties.includes(key)
+        // && (!!stateObj[key] || stateObj[key] === '')
+        && stateObj[key] !== undefined
       ) {
-        formComps.push({name:key,value:stateObj[key]});
+        characteristics.push(key);
       }
     }
 
-    // console.log(formComps);
+    // console.log(characteristics);
 
 
     return (
-      formComps.map(characteristic => (
-      <div key={characteristic.name} className="form-group">
-          <label htmlFor={characteristic.name}>{characteristic.name}</label>
-          <input className="form-control" name={characteristic.name} type="text" 
+      characteristics.map(characteristic => (
+      <div key={characteristic} className="form-group">
+          <label htmlFor={characteristic}>{characteristic}</label>
+          <input className="form-control" name={characteristic} type="text" 
             onChange={this.handleInputChange}
-            value={this.state[characteristic.name]}/>
+            value={this.state[characteristic]}/>
 
-          {!DefaultCharacteristics.includes(characteristic.name) ? (
+          {!DefaultCharacteristics.includes(characteristic) ? (
               <button className="btn btn-primary"
-                onClick={() => this.deleteProperty(characteristic.name)}
+                onClick={() => this.deleteProperty(characteristic)}
                 > Delete 
               </button>
             ):(
