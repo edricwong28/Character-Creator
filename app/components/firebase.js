@@ -125,6 +125,25 @@ database.ref("characters").on("child_changed",function(user) {
 		// console.log(nextChar);
 		database.ref(`allCharacters/${char.key}`).update(nextChar);
 	});
+
+	// database.ref(`characters/${user.key}`).on("child_removed",function(char) {
+	// 	// let deleteChar = char.val();
+	// 	// nextChar.userKey = user.key;
+	// 	// console.log(nextChar);
+
+	// 	console.log(char.val);
+	// 	database.ref(`allCharacters/${char.key}`).remove();
+	// });
+});
+
+database.ref("characters").on("child_added",function(user) {
+	// console.log(user.key);
+	database.ref(`characters/${user.key}`).on("child_added",function(char) {
+		let nextChar = char.val();
+		nextChar.userKey = user.key;
+		// console.log(nextChar);
+		database.ref(`allCharacters/${char.key}`).update(nextChar);
+	});
 });
 
 // database.ref("allCharacters").orderByChild("updatedAt")

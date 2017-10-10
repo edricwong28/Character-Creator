@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+const database = require("./firebase.js");
 
 const DefaultCharacteristics = ["name","age","gender"];
-const ReservedProperties = ["comments","_id"];
+const ReservedProperties = ["comments","_id","isPublic"];
 
 let testCharacter = 
   {
@@ -11,11 +12,11 @@ let testCharacter =
     species:"human",
     comments:[{
       message:"hello",
-      user_id:0,
+      userKey:0,
       createdAt:"testDate"
     },{
       message:"Yo",
-      user_id:0,
+      userKey:0,
       createdAt:"testDate"
     }]
   };
@@ -45,7 +46,7 @@ class CharacterForm extends Component {
     });
   };
 
-  handleFormSubmit = event => {
+  handleCreation = event => {
     event.preventDefault();
 
     let stateObj = this.state;
@@ -69,12 +70,28 @@ class CharacterForm extends Component {
       return
     }
 
-    console.log(output);
+    let currentTime = Date.now();
 
-    this.setState({
-      newProperty:""
-    });    
+    output.createdAt = currentTime;
+    output.updatedAt = currentTime;
+
+    console.log(output);
+    // console.log(this.props.userKey);
+
+    database.ref(`characters/${this.props.userKey}`).push(output);
+
+    let empty = {};
+
+    for (let key in stateObj) {
+      empty[key] = "";
+    }
+
+    this.setState(empty);
   };
+
+  handleEdit = event => {
+    event.preventDefault();
+  }
 
   addProperty = event => {
     event.preventDefault();
@@ -192,10 +209,10 @@ class CharacterForm extends Component {
 
             {this.props.characterKey ? (
               <button className="btn btn-primary"  
-                onClick={this.handleFormSubmit}>Edit</button>
+                onClick={this.handleEdit}>Edit</button>
               ) : (
               <button className="btn btn-primary"  
-                onClick={this.handleFormSubmit}>Create</button>
+                onClick={this.handleCreation}>Create</button>
               )
             }
 
