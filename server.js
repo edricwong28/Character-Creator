@@ -18,7 +18,7 @@ app.use(express.static('./public'));
 // 		console.log(err)
 // });
 
-app.get('*', function(req, res, err){
+app.get('/', function(req, res, err){
 	res.sendFile(__dirname + '/public/html/index.html');
 		console.log(err);
 });
