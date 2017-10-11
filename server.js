@@ -29,7 +29,7 @@ app.get('/', function(req, res, err){
 // });
 
 // app.get('/forum', function(req, res, err){
-// 	res.sendFile(__dirname + '/public/html/forum.html');
+// 	res.sendFile(__dirname + '/public/html/index.html');
 // 		console.log(err);
 // });
 
