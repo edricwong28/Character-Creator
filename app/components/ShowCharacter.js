@@ -3,21 +3,21 @@ const database = require("./firebase.js");
 
 const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
 
-let testCharacter = 
-	{
-		name:"Test-2",
-		age:16,
-		gender:"male",
-		comments:[{
-			message:"hello",
-			user_id:0,
-			createdAt:"testDate"
-		},{
-			message:"Yo",
-			user_id:0,
-			createdAt:"testDate"
-		}]
-	};
+// let testCharacter = 
+// 	{
+// 		name:"Test-2",
+// 		age:16,
+// 		gender:"male",
+// 		comments:[{
+// 			message:"hello",
+// 			user_id:0,
+// 			createdAt:"testDate"
+// 		},{
+// 			message:"Yo",
+// 			user_id:0,
+// 			createdAt:"testDate"
+// 		}]
+// 	};
 
 class UserCharacters extends Component {
 
@@ -84,16 +84,16 @@ class UserCharacters extends Component {
 
 		if (!comments) {return}
 
-		return (
+		// return (
 			
-			comments.map(comment => (
-				<div className="comment">
-					<p className="commentBody text-left">{comment.message}</p>
-					<p className="author">by {comment.user_id} at <span className="dateString">{comment.createdAt}</span></p>
-				</div>
-			))
+		// 	comments.map(comment => (
+		// 		<div className="comment">
+		// 			<p className="commentBody text-left">{comment.message}</p>
+		// 			<p className="author">by {comment.user_id} at <span className="dateString">{comment.createdAt}</span></p>
+		// 		</div>
+		// 	))
 			
-		)
+		// )
 	}
 
 	uploadComment = event => {
@@ -106,12 +106,15 @@ class UserCharacters extends Component {
 		let newComment = {
 			message: this.state.comment,
 			userKey: this.props.userKey,
-			createdAt: "testDate"
+			createdAt: Date.now()
 		}
 
 		console.log(newComment);
 
-		testCharacter.comments.push(newComment);
+		// testCharacter.comments.push(newComment);
+
+		database.ref(`characters/${this.state.characterData.userKey}/${this.props.characterKey}/comments`)
+			.push(newComment);
 
 		this.setState({
 			comment:""
