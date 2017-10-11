@@ -1,80 +1,47 @@
 import React, { Component } from "react";
+const database = require("./firebase.js");
 
-const ReservedProperties = ["comments","_id","isPublic"];
 
-let testCharacters = [
-	{
-		name:"",
-		age:16,
-		gender:"male",
-		comments:[]
-	},
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
 
-	{
-		name:"test",
-		age:16,
-		gender:"male",
-		testProp:""
-	},
+// let testCharacters = [
+// 	{
+// 		name:"",
+// 		age:16,
+// 		gender:"male",
+// 		comments:[]
+// 	},
 
-	{
-	    name:"Test-2",
-	    age:16,
-	    gender:"male",
-	    species:"human",
-	    comments:[{
-	      message:"hello",
-	      user_id:0,
-	      createdAt:"testDate"
-	    },{
-	      message:"Yo",
-	      user_id:0,
-	      createdAt:"testDate"
-    }]
-  }
+// 	{
+// 		name:"test",
+// 		age:16,
+// 		gender:"male",
+// 		testProp:""
+// 	},
 
-];
+// 	{
+// 	    name:"Test-2",
+// 	    age:16,
+// 	    gender:"male",
+// 	    species:"human",
+// 	    comments:[{
+// 	      message:"hello",
+// 	      user_id:0,
+// 	      createdAt:"testDate"
+// 	    },{
+// 	      message:"Yo",
+// 	      user_id:0,
+// 	      createdAt:"testDate"
+//     }]
+//   }
 
-let database = {
-	users:{
-		"AAAA":{
-			name:"Red"
-		},
-
-		"AAAB":{
-			name:"Blue"
-		}
-	},
-
-	characters:{
-		"AAAA":{
-			"0000":{
-				name:"Red",
-				age:10,
-				gender:"male"
-			},
-			"0001":{
-				name:"Bulb",
-				age:5,
-				gender:"male"
-			}
-		},
-
-		"AAAB":{
-			"0000":{
-				name:"Blue",
-				age:10,
-				gender:"female"
-			}
-		}
-	}
-}
+// ];
 
 class UserCharacters extends Component {
 
 	state = {
 		characters: []
-	}
+	};
 
 	componentDidMount() {
 		if(this.props.userKey)
@@ -83,16 +50,52 @@ class UserCharacters extends Component {
 		else {
 			this.loadPublicCharacters();
 		}
-	}
+	};
 
 	loadUserCharacters() {
-		this.setState({characters:testCharacters});
-	}
+
+		let characters = [];
+		// this.setState({characters:testCharacters});
+		database.ref(`characters/${this.props.userKey}`)
+		  .orderByChild('updatedAt')
+		  .once('value')
+		  .then(function(snapshots) {
+		  
+		  snapshots.forEach(function(char) {
+		    characters.push(char.val());
+		  });
+
+		  console.log(characters);
+		  this.setState({characters:characters.reverse()});
+
+		}.bind(this));
+
+	};
 
 	loadPublicCharacters() {
-		this.setState({characters:testCharacters});
-		// this.setState({characters:database.characters.AAAA});
-	}
+
+		let characters = [];
+		// this.setState({characters:testCharacters});
+		database.ref(`allCharacters`)
+		  .orderByChild('updatedAt')
+		  // .orderByChild('privacy')
+		  // .equalTo("public")
+		  .once('value')
+		  .then(function(snapshots) {
+		  
+		  // console.log(snapshots);
+
+		  snapshots.forEach(function(char) {
+		  	if(char.val().privacy === "public") {
+		    	characters.push(char.val());
+		  	}
+		  });
+
+		  console.log(characters);
+		  this.setState({characters:characters.reverse()});
+
+		}.bind(this));
+	};
 
 	displayCharacter = character => {
 
@@ -105,7 +108,7 @@ class UserCharacters extends Component {
 			}
 		}
 
-		console.log(traitsArr);
+		// console.log(traitsArr);
 
 		return (
 
@@ -116,7 +119,7 @@ class UserCharacters extends Component {
 		))
 
 		)
-	}
+	};
 
 	render() {
 		return (
