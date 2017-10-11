@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+const Moment = require('moment');
 const database = require("./firebase.js");
 
 const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
@@ -113,7 +114,7 @@ class UserCharacters extends Component {
 			comments.map(comment => (
 				<div className="comment">
 					<p className="commentBody text-left">{comment.message}</p>
-					<p className="author">by {comment.userName} at {comment.createdAt}</p>
+					<p className="author">by {comment.userName} at {this.formatDate(comment.createdAt)}</p>
 				</div>
 			))
 			
@@ -146,25 +147,9 @@ class UserCharacters extends Component {
 		})
 	};
 
-	// displayName = uid => {
-
-	// 	console.log(uid);
-
-	// 	let userName;
-
-	// 	database
-	// 		.ref(`users/${uid}`)
-	// 		.once('value')
-	// 		.then(user => {
-	// 			userName = user.val().name;
-	// 			console.log(userName);
-	// 	});
-
-	// 	return userName;
-
-	// 	// Darn you ansynchronusl;adf;iorghrj/ek;ho'
-
-	// };
+	formatDate(timestamp) {
+		return Moment(timestamp).format("hh:mma MM/DD/YYYY");
+	};
 
 	render() {
 		return (
