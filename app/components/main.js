@@ -24,7 +24,7 @@ class Main extends React.Component {
 								<a className="button-error pure-button" href="app.js" action="/create" method="GET">Create character</a>
 								<br></br>
 								<br></br>
-								<a className="button-error pure-button" href="app.js" action="/forum" method="GET">View other users characters</a>
+								<a className="button-error pure-button" href="forum.html" action="/forum" method="GET">View other users characters</a>
 							</div>
 						</div>
 					</div>
