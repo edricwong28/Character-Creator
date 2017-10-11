@@ -59,7 +59,7 @@ class UserCharacters extends Component {
 		let traitsArr = [];
 
 		for(let prop in character) {
-			if(!ReservedProperties.includes(prop)) {
+			if(!ReservedProperties.includes(prop) && prop !== "name") {
 				traitsArr.push({name:prop,value:character[prop]});
 			}
 		}
@@ -80,20 +80,30 @@ class UserCharacters extends Component {
 		)
 	}
 
-	displayComments = comments => {
+	displayComments = commentObj => {
 
-		if (!comments) {return}
+		if (!commentObj) {return}
 
-		// return (
+		// let char = this.state.characterData;
+
+		let comments = [];
+
+		for(let key in commentObj) {
+			comments.push(commentObj[key]);
+		}
+
+		console.log(comments);
+
+		return (
 			
-		// 	comments.map(comment => (
-		// 		<div className="comment">
-		// 			<p className="commentBody text-left">{comment.message}</p>
-		// 			<p className="author">by {comment.user_id} at <span className="dateString">{comment.createdAt}</span></p>
-		// 		</div>
-		// 	))
+			comments.map(comment => (
+				<div className="comment">
+					<p className="commentBody text-left">{comment.message}</p>
+					<p className="author">by {comment.userKey} at <span className="dateString">{comment.createdAt}</span></p>
+				</div>
+			))
 			
-		// )
+		)
 	}
 
 	uploadComment = event => {
@@ -126,7 +136,11 @@ class UserCharacters extends Component {
 			<div>
 				<div className="panel panel-default">
 					<div className="panel-heading panel-heading-custom">
-            			<h1 className="panel-title"> {this.state.characterData.name} </h1>
+            			{this.state.characterData.name ? (
+				              <h1 className="panel-title"> {this.state.characterData.name} </h1>
+				        ) : (
+				              <h1 className="panel-title"> Awaiting Name </h1>
+				        )}
           			</div>
 
           			<div className="panel-body">

@@ -103,7 +103,7 @@ class UserCharacters extends Component {
 		let traitsArr = [];
 
 		for(let prop in character) {
-			if(!ReservedProperties.includes(prop)) {
+			if(!ReservedProperties.includes(prop) && prop !== "name") {
 				traitsArr.push({name:prop,value:character[prop]});
 			}
 		}

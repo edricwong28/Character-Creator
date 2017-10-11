@@ -2,24 +2,24 @@ import React, { Component } from "react";
 const database = require("./firebase.js");
 
 const DefaultCharacteristics = ["name","age","gender"];
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
 
-let testCharacter = 
-  {
-    name:"Test-2",
-    age:16,
-    gender:"male",
-    species:"human",
-    comments:[{
-      message:"hello",
-      userKey:0,
-      createdAt:"testDate"
-    },{
-      message:"Yo",
-      userKey:0,
-      createdAt:"testDate"
-    }]
-  };
+// let testCharacter = 
+//   {
+//     name:"Test-2",
+//     age:16,
+//     gender:"male",
+//     species:"human",
+//     comments:[{
+//       message:"hello",
+//       userKey:0,
+//       createdAt:"testDate"
+//     },{
+//       message:"Yo",
+//       userKey:0,
+//       createdAt:"testDate"
+//     }]
+//   };
 
 class CharacterForm extends Component {
   state = {
