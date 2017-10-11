@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+const database = require("./firebase.js");
 
-const ReservedProperties = ["comments","_id","isPublic"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
 
 let testCharacter = 
 	{
@@ -30,7 +31,19 @@ class UserCharacters extends Component {
 	}
 
 	loadCharacter() {
-		this.setState({characterData:testCharacter});
+		database
+			.ref(`allCharacters/${this.props.characterKey}`)
+			.once('value')
+			.then(char => 
+		{
+
+			if(char.val().privacy === "private") {
+				return console.log("N/A");
+			}
+	    	console.log(char.val());
+	    	this.setState({characterData:char.val()});
+	    });
+		// this.setState({characterData:testCharacter});
 	}
 
 	handleInputChange = event => {
@@ -51,7 +64,7 @@ class UserCharacters extends Component {
 			}
 		}
 
-		console.log(traitsArr);
+		// console.log(traitsArr);
 
 
 		return (
