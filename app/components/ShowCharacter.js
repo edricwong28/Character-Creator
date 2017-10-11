@@ -23,11 +23,13 @@ class UserCharacters extends Component {
 
 	state = {
 		characterData: {},
-		comment:""
+		comment:"",
+		author:""
 	}
 
 	componentDidMount() {
 		this.loadCharacter();
+		this.loadAuthor();
 	}
 
 	loadCharacter() {
@@ -42,6 +44,18 @@ class UserCharacters extends Component {
 			}
 	    	console.log(char.val());
 	    	this.setState({characterData:char.val()});
+	    });
+		// this.setState({characterData:testCharacter});
+	}
+
+	loadAuthor() {
+		database
+			.ref(`users/${this.props.userKey}`)
+			.once('value')
+			.then(user => 
+		{
+	    	console.log(user.val());
+	    	this.setState({author:user.val()});
 	    });
 		// this.setState({characterData:testCharacter});
 	}
@@ -99,7 +113,7 @@ class UserCharacters extends Component {
 			comments.map(comment => (
 				<div className="comment">
 					<p className="commentBody text-left">{comment.message}</p>
-					<p className="author">by {comment.userKey} at <span className="dateString">{comment.createdAt}</span></p>
+					<p className="author">by {comment.userName} at {comment.createdAt}</p>
 				</div>
 			))
 			
@@ -116,6 +130,7 @@ class UserCharacters extends Component {
 		let newComment = {
 			message: this.state.comment,
 			userKey: this.props.userKey,
+			userName: this.state.author.name,
 			createdAt: Date.now()
 		}
 
@@ -129,7 +144,27 @@ class UserCharacters extends Component {
 		this.setState({
 			comment:""
 		})
-	}
+	};
+
+	// displayName = uid => {
+
+	// 	console.log(uid);
+
+	// 	let userName;
+
+	// 	database
+	// 		.ref(`users/${uid}`)
+	// 		.once('value')
+	// 		.then(user => {
+	// 			userName = user.val().name;
+	// 			console.log(userName);
+	// 	});
+
+	// 	return userName;
+
+	// 	// Darn you ansynchronusl;adf;iorghrj/ek;ho'
+
+	// };
 
 	render() {
 		return (
