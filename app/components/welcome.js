@@ -62,23 +62,22 @@ class Welcome extends React.Component {
 
    //Add Realtime Listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
-    if(firebaseUser){
+    if(firebaseUser) {
       console.log(firebaseUser);
       console.log("User ID is " + firebaseUser.uid)
       btnLogout.classList.remove("hide");
-    }else{
+    } else {
       console.log("Not Logged In.");
       btnLogout.classList.add("hide");
     }
    });
 
    //set user iud to use with the users Email------
-  });
     <h2>Login Form</h2>
 
     <form id='form'>
 
-      <div class="container">
+      <div className="container">
         <label><b>Username</b></label>
       <input id="txtEmail" type="text" value="" placeholder="Enter Username" name="uname" required />
 
