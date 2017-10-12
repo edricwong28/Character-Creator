@@ -76,9 +76,10 @@ const database = firebase.database();
 // 	}
 // });
 
-// database.ref("users").push({
+// database.ref("users/KDDVKfL7VxbkKOjPNwxFg0pP9cd2").set({
 // 	name:"YETC7",
-// 	email:"tyler_726@live.com"
+// 	email:"tyler_726@live.com",
+// 	createdAt: Date.now()
 // });
 
 // database.ref("characters/zero").push({

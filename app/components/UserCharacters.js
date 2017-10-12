@@ -1,48 +1,18 @@
+// Dependencies
 import React, { Component } from "react";
 const database = require("./firebase.js");
 
-
+// Constants
 const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
 
-// let testCharacters = [
-// 	{
-// 		name:"",
-// 		age:16,
-// 		gender:"male",
-// 		comments:[]
-// 	},
-
-// 	{
-// 		name:"test",
-// 		age:16,
-// 		gender:"male",
-// 		testProp:""
-// 	},
-
-// 	{
-// 	    name:"Test-2",
-// 	    age:16,
-// 	    gender:"male",
-// 	    species:"human",
-// 	    comments:[{
-// 	      message:"hello",
-// 	      user_id:0,
-// 	      createdAt:"testDate"
-// 	    },{
-// 	      message:"Yo",
-// 	      user_id:0,
-// 	      createdAt:"testDate"
-//     }]
-//   }
-
-// ];
-
+// Displays all user characters or all public characters
 class UserCharacters extends Component {
 
 	state = {
 		characters: []
 	};
 
+	// Load user's characters if userKey or loads public characters
 	componentDidMount() {
 		if(this.props.userKey)
 			this.loadUserCharacters();
@@ -52,30 +22,35 @@ class UserCharacters extends Component {
 		}
 	};
 
-	loadUserCharacters() {
+	// Recieves User's characters from database
+	loadUserCharacters = () => {
 
 		let characters = [];
-		// this.setState({characters:testCharacters});
+
+		// Gets characters from database
 		database.ref(`characters/${this.props.userKey}`)
 		  .orderByChild('updatedAt')
 		  .once('value')
 		  .then(function(snapshots) {
 		  
+		  // Adds each character to array
 		  snapshots.forEach(function(char) {
 		    characters.push(char.val());
 		  });
 
-		  console.log(characters);
+		  // console.log(characters);
 		  this.setState({characters:characters.reverse()});
 
 		}.bind(this));
 
 	};
 
-	loadPublicCharacters() {
+	// Loads public characters from database
+	loadPublicCharacters = () => {
 
 		let characters = [];
-		// this.setState({characters:testCharacters});
+
+		// Gets characters from database
 		database.ref(`allCharacters`)
 		  .orderByChild('updatedAt')
 		  // .orderByChild('privacy')
@@ -83,47 +58,53 @@ class UserCharacters extends Component {
 		  .once('value')
 		  .then(function(snapshots) {
 		  
-		  // console.log(snapshots);
-
+		  // Only displays chaaracter if public
 		  snapshots.forEach(function(char) {
 		  	if(char.val().privacy === "public") {
 		    	characters.push(char.val());
 		  	}
 		  });
 
-		  console.log(characters);
+		  // console.log(characters);
 		  this.setState({characters:characters.reverse()});
 
 		}.bind(this));
 	};
 
+
+	// Displays the characters characteristic
 	displayCharacter = character => {
 
+		let charArr = [];
 
-		let traitsArr = [];
-
+		// Creates a list of characteristic
 		for(let prop in character) {
 			if(!ReservedProperties.includes(prop) && prop !== "name") {
-				traitsArr.push({name:prop,value:character[prop]});
+				charArr.push({name:prop,value:character[prop]});
 			}
 		}
 
-		// console.log(traitsArr);
+		// console.log(charArr);
 
+		// Maps the array of characteristic to display it to the page
 		return (
 
-		traitsArr.map(trait => ( 
-			<div className="row">
-            	<div className="characterPanel"> {trait.name}: {trait.value} </div>
-          	</div>
-		))
+			charArr.map(char => ( 
+	            <div className="characteristic"> {char.name}: {char.value} </div>
+			))
 
 		)
 	};
 
+	// Renders the page
 	render() {
 		return (
 			<div>
+
+				{!this.state.characters.length ?(
+					<p>No characters to display</p>
+				):(<br></br>)}
+
 				{this.state.characters.map(character => (
 					<div className="panel panel-default">
 						<div className="panel-heading panel-heading-custom">
