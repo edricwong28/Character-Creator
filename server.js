@@ -14,7 +14,7 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static('./public'));
 
 app.get('/welcome', function(req, res, err){
-	res.send(__dirname + '/public/html/index.html');
+	res.send(__dirname + '/app/components/welcome.js');
 		console.log(err)
 });
 

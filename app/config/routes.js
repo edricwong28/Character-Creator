@@ -1,24 +1,23 @@
-const React = require('react');
-const router = require('react-router');
-const Route = router.Route;
-const Router = router.Router;
-const hashHistory = router.hashHistory;
-const IndexRoute = route.IndexRoute;
+import React from 'react';
+// import router from 'react-router';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
-const Welcome = require('../components/Welcome');
-const Main = require('../components/Main');
-const Forum = require('../components/Forum');
+import Welcome from '../components/Welcome';
+import Main from '../components/Main';
+import Forum from '../components/Forum';
 
-const routes = (
+// const Route = router.Route;
+// debugger;
+console.log(Main);
+const routes = () => (
+	<Router>
+		<Switch>
+			<Route exact path="/" component={Main} />
+			
+			<Route path="/Welcome" component={Welcome} />
 
-	<Router history={hashHistory}>
-		<Route path="/" component={Main}>
-		
-		<Route path="/Welcome" component={Welcome} />
-
-		<Route path="/Forum" component={Forum} />
-
-		</Route>
+			<Route path="/Forum" component={Forum} />
+		</Switch>
 	</Router>
 );
 

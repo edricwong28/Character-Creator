@@ -4,8 +4,11 @@ import ReactDOM from 'react-dom';
 // import Main from "./components/Main";
 // import Forum from "./components/Forum"
 
-const routes = require('./config/routes');
-
+// const Routes = require('./config/routes');
+import Routes from './config/routes';
+console.log(Routes);
+// debugger;
 ReactDOM.render(
-	routes, 
-	document.getElemenetById("app"));
+	<Routes />, 
+	document.getElementById("app")
+);

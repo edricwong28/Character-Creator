@@ -32,10 +32,10 @@ class Main extends React.Component {
 						 <h2 className="content-head is-center">
 						 <b> Welcome back! </b></h2>
 							<div className="buttons">
-								<a className="button-error pure-button" href="app.js" action="/create" method="GET">Create character</a>
+								<a className="button-error pure-button" href="/createCharacter" action="/create" method="GET">Create character</a>
 								<br></br>
 								<br></br>
-								<a className="button-error pure-button" href="forum.html" action="/forum" method="GET">View other users characters</a>
+								<a className="button-error pure-button" href="/forum" action="/forum" method="GET">View other users characters</a>
 							</div>
 						</div>
 					</div>
