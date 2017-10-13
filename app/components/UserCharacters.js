@@ -1,9 +1,19 @@
 // Dependencies
 import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+} from 'react-router-dom';
+
+import CharacterForm from "./CharacterForm.js";
+import ShowComments from "./ShowComments.js";
+
 const database = require("./firebase.js");
 
 // Constants
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
 
 // Displays all user characters or all public characters
 class UserCharacters extends Component {
@@ -14,12 +24,13 @@ class UserCharacters extends Component {
 
 	// Load user's characters if userKey or loads public characters
 	componentDidMount() {
-		if(this.props.userKey)
-			this.loadUserCharacters();
 
-		else {
+		if (this.props.viewing) {
 			this.loadPublicCharacters();
 		}
+
+		else if(this.props.userKey)
+			this.loadUserCharacters();
 	};
 
 	// Recieves User's characters from database
@@ -58,7 +69,7 @@ class UserCharacters extends Component {
 		  .once('value')
 		  .then(function(snapshots) {
 		  
-		  // Only displays chaaracter if public
+		  // Only displays character if public
 		  snapshots.forEach(function(char) {
 		  	if(char.val().privacy === "public") {
 		    	characters.push(char.val());
@@ -75,6 +86,8 @@ class UserCharacters extends Component {
 	// Displays the characters characteristic
 	displayCharacter = character => {
 
+		// console.log(character);
+
 		let charArr = [];
 
 		// Creates a list of characteristic
@@ -90,14 +103,60 @@ class UserCharacters extends Component {
 		return (
 
 			charArr.map(char => ( 
-	            <div className="characteristic"> {char.name}: {char.value} </div>
+	            <div key={char.name} className="characteristic"> {char.name}: {char.value} </div>
 			))
 
 		)
 	};
 
+  	goToEdit = charKey => {
+  		// console.log(charKey);
+  		this.setState({charToEdit:charKey});
+  	}
+
 	// Renders the page
 	render() {
+		// return (
+		// 	<Router>
+		// 	<div>
+		// 	<Switch>
+		// 	<Route exact path="/characters" render={() => <div>
+
+		// 		{!this.state.characters.length ?(
+		// 			<p>No characters to display</p>
+		// 		):(<br></br>)}
+
+		// 		{this.state.characters.map(character => (
+		// 			<div key={character.name+":"+character.createdAt} className="panel panel-default">
+		// 				<div className="panel-heading panel-heading-custom">
+            				
+
+  //           				{character.name ? (
+		// 		              <h1 className="panel-title"> {character.name} </h1>
+		// 		              ) : (
+		// 		              <h1 className="panel-title"> Awaiting Name </h1>
+		// 		              )
+		// 		            }
+  //         				</div>
+
+  //         				<div className="panel-body">
+  //         					{this.displayCharacter(character)}
+  //         				</div>
+
+  //         				<Link to="/test">Test</Link>
+		// 			</div>
+
+					
+		// 		))} </div> } />
+
+		// 	<Route exact path="/test" render={() => <div>Testing</div>} />
+		// 	</Switch>
+		// 	</div>
+		// 	</Router>
+				
+		// );
+
+
 		return (
 			<div>
 
@@ -105,26 +164,40 @@ class UserCharacters extends Component {
 					<p>No characters to display</p>
 				):(<br></br>)}
 
-				{this.state.characters.map(character => (
-					<div className="panel panel-default">
-						<div className="panel-heading panel-heading-custom">
-            				
+				{this.state.charToEdit ?(
+					<CharacterForm characterKey={this.state.charToEdit} userKey={this.props.userKey}/>
+				):(
 
-            				{character.name ? (
-				              <h1 className="panel-title"> {character.name} </h1>
-				              ) : (
-				              <h1 className="panel-title"> Awaiting Name </h1>
-				              )
-				            }
-          				</div>
+				<div>
+					{this.state.characters.map(character => (
+						<div key={character.name+":"+character.createdAt} className="panel panel-default">
+							<div className="panel-heading panel-heading-custom">
+	            				
 
-          				<div className="panel-body">
-          					{this.displayCharacter(character)}
-          				</div>
-					</div>
+	            				{character.name ? (
+					              <h1 className="panel-title"> {character.name} </h1>
+					              ) : (
+					              <h1 className="panel-title"> Awaiting Name </h1>
+					              )
+					            }
+	          				</div>
+
+	          				<div className="panel-body">
+	          					{this.displayCharacter(character)}
+	          				</div>
+
+	          				{!this.props.viewing ?(
+	          					<button className="btn btn-primary" onClick={() => this.goToEdit(character.key)}>Edit</button>
+	          				):(<div></div>)}
+
+	          				<ShowComments userKey={this.props.userKey} characterKey={character.key} />
+	          				
+						</div>
 
 					
-				))}
+					))}
+
+				</div> )}
 
 			</div>
 				

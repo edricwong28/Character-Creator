@@ -1,13 +1,13 @@
 // Dependencies
 import React, { Component } from "react";
-const Moment = require('moment');
+// const Moment = require('moment');
 const database = require("./firebase.js");
 
 // Constants
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
 
 // Displays one character to the user
-class ShowCharacter extends Component {
+class ShowComments extends Component {
 
 	state = {
 		characterData: undefined,
@@ -23,6 +23,9 @@ class ShowCharacter extends Component {
 
 	// Loads character from the database based on characterKey
 	loadCharacter() {
+
+		// console.log(this.props.characterKey);
+
 		database
 			.ref(`allCharacters/${this.props.characterKey}`)
 			.once('value')
@@ -33,9 +36,6 @@ class ShowCharacter extends Component {
 				return console.log("Character does not exist at this key");
 			}
 
-			if(char.val().privacy === "private") {
-				return console.log("N/A");
-			}
 	    	// console.log(char.val());
 	    	this.setState({characterData:char.val()});
 	    });
@@ -43,6 +43,9 @@ class ShowCharacter extends Component {
 
 	// Sets current user to the state
 	loadAuthor() {
+
+		// console.log(this.props.userKey);
+
 		database
 			.ref(`users/${this.props.userKey}`)
 			.once('value')
@@ -112,15 +115,22 @@ class ShowCharacter extends Component {
 		// Turns each comment into a block
 		return (
 			
+			// comments.map(comment => (
+			// 	<div className="comment">
+			// 		<p className="commentBody text-left">{comment.message}</p>
+			// 		<p className="author">by {comment.userName} at {this.formatDate(comment.createdAt)}</p>
+			// 	</div>
+			// ))
+
 			comments.map(comment => (
-				<div className="comment">
+				<div key={comment.userKey+""+comment.createdAt} className="comment">
 					<p className="commentBody text-left">{comment.message}</p>
-					<p className="author">by {comment.userName} at {this.formatDate(comment.createdAt)}</p>
+					<p className="author">by {comment.userName} at {(comment.createdAt)}</p>
 				</div>
 			))
 			
 		)
-	}
+	};
 
 	// Adds commment to the current character
 	// *** want the page to refresh after submit ***
@@ -143,18 +153,20 @@ class ShowCharacter extends Component {
 
 		// Pushes new comment to the datbase
 		database.ref(`characters/${this.state.characterData.userKey}/${this.props.characterKey}/comments`)
-			.push(newComment);
+		.push(newComment).then(() => {
+			// Resets the state
+			// this.setState({
+			// 	comment:""
+			// });
+			window.location.reload();
+		});
 
-		// Resets the state
-		this.setState({
-			comment:""
-		})
 	};
 
 	// Formats date from Date timestamp
-	formatDate(timestamp) {
-		return Moment(timestamp).format("hh:mma MM/DD/YYYY");
-	};
+	// formatDate(timestamp) {
+	// 	return Moment(timestamp).format("hh:mma MM/DD/YYYY");
+	// };
 
 	// Renders the page
 	render() {
@@ -164,18 +176,9 @@ class ShowCharacter extends Component {
 					<p>There is no character to show</p>
 				) : (
 
-					<div className="panel panel-default">
-						<div className="panel-heading panel-heading-custom">
-	            			{this.state.characterData.name ? (
-					              <h1 className="panel-title"> {this.state.characterData.name} </h1>
-					        ) : (
-					              <h1 className="panel-title"> Awaiting Name </h1>
-					        )}
-	          			</div>
-
 	          			<div className="panel-body">
-	          				{this.displayCharacter(this.state.characterData)}
 	          				{this.displayComments(this.state.characterData.comments)}
+
 	          				{this.props.userKey ? (
 				              <form>
 				              	<input className="form-control" name="comment" type="text" 
@@ -190,7 +193,6 @@ class ShowCharacter extends Component {
 				              )
 				            }
 	          			</div>
-					</div>		
 				)}
 			</div>				
 		);
@@ -198,4 +200,4 @@ class ShowCharacter extends Component {
 }
 
 
-export default ShowCharacter;
+export default ShowComments;

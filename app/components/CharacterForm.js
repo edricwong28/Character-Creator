@@ -1,10 +1,11 @@
 // Dependencies
 import React, { Component } from "react";
+import ShowComments from "./ShowComments.js";
 const database = require("./firebase.js");
 
 // Constants
 const DefaultCharacteristics = ["name","age","gender"]; // Every Creation has at least these properties
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
 
 // Form users use to create/edit to character and stores info to the database
 class CharacterForm extends Component {
@@ -12,6 +13,7 @@ class CharacterForm extends Component {
     name:"",
     gender:"",
     age:"",
+    privacy:"private",
     newProperty:""
   };
 
@@ -39,6 +41,8 @@ class CharacterForm extends Component {
     this.setState({
       [name]: value
     });
+
+    // console.log(this.state);
   };
 
   // Creates form based on the current state
@@ -180,12 +184,16 @@ class CharacterForm extends Component {
 
     output.createdAt = currentTime;
     output.updatedAt = currentTime;
-    output.privacy = "private";
+    output.privacy = this.state.privacy;
+    output.userKey = this.props.userKey;
 
     // console.log(output);
 
     // Pushes character to the database
-    database.ref(`characters/${this.props.userKey}`).push(output);
+    database.ref(`characters/${this.props.userKey}`).push(output).then(function(data) {
+      // console.log(data);
+      database.ref(`characters/${this.props.userKey}/${data.key}`).update({key:data.key});
+    }.bind(this));
 
     // Sets each property in the state to empty string
     let empty = {};
@@ -241,8 +249,11 @@ class CharacterForm extends Component {
     console.log(output);
 
     // Updates character in the database
-    database.ref(`characters/${this.props.userKey}/${this.props.characterKey}`).update(output);
-    database.ref(`allCharacters/${this.props.characterKey}`).update(output);
+    database.ref(`characters/${this.props.userKey}/${this.props.characterKey}`).update(output).then(() => {
+      database.ref(`allCharacters/${this.props.characterKey}`).update(output).then(() => {
+        window.location.reload();
+      });
+    });
   };
 
   
@@ -265,9 +276,18 @@ class CharacterForm extends Component {
 
             {this.createForm()}
 
+            <form>
+              <input type="radio" name="privacy" value="private" onChange={this.handleInputChange} /> private 
+              <input type="radio" name="privacy" value="public" onChange={this.handleInputChange} /> public
+            </form>
+
             {this.props.characterKey ? (
-              <button className="btn btn-primary"  
-                onClick={this.handleEdit}>Edit</button>
+              <div>
+                <button className="btn btn-primary"  
+                  onClick={this.handleEdit}>Edit</button>
+
+                <ShowComments userKey={this.props.userKey} characterKey={this.props.characterKey} />
+              </div>
               ) : (
               <button className="btn btn-primary"  
                 onClick={this.handleCreation}>Create</button>
