@@ -9,7 +9,7 @@ const Welcome = require('../components/Welcome');
 const Main = require('../components/Main');
 const Forum = require('../components/Forum');
 
-module.exports = (
+const routes = (
 
 	<Router history={hashHistory}>
 		<Route path="/" component={Main}>
@@ -20,4 +20,6 @@ module.exports = (
 
 		</Route>
 	</Router>
-	);
+);
+
+export default routes;

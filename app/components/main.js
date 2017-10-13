@@ -1,6 +1,17 @@
 import React, { Components } from 'react';
+import ReactDOM from 'react-dom'
+import routes from '../config/routes.js'
 
 class Main extends React.Component {
+	constructor(props){
+		super(props);
+
+		window.onload = () => {
+			ReactDOM.render(<Routes />, 
+			document.getElementById('Main'));
+		}
+	}
+
 	render() {
 		return(
 
@@ -48,6 +59,6 @@ class Main extends React.Component {
 		);
 	}
 }
-module.exports = Main;
+export default Main;
 	
 

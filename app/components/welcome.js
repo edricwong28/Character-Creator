@@ -3,20 +3,14 @@ import React from 'react';
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
-  }
-  render() {
-    return (
-    
-    const config = {
-     apiKey: "AIzaSyB0UihSyhP1Vqa4Xty3BUdpogDcd3nBzNE",
-     authDomain: "character-creator-3c5d4.firebaseapp.com",
-     databaseURL: "https://character-creator-3c5d4.firebaseio.com",
-     projectId: "character-creator-3c5d4",
-    storageBucket: "character-creator-3c5d4.appspot.com",
-     messagingSenderId: "786656588768"
-   };
-
-   firebase.initializeApp(config);
+   firebase.initializeApp({
+       apiKey: "AIzaSyB0UihSyhP1Vqa4Xty3BUdpogDcd3nBzNE",
+       authDomain: "character-creator-3c5d4.firebaseapp.com",
+       databaseURL: "https://character-creator-3c5d4.firebaseio.com",
+       projectId: "character-creator-3c5d4",
+      storageBucket: "character-creator-3c5d4.appspot.com",
+       messagingSenderId: "786656588768"
+   });
 
    const txtEmail = document.getElementById("txtEmail");
    const txtPassword = document.getElementById("txtPassword");
@@ -71,32 +65,40 @@ class Welcome extends React.Component {
       btnLogout.classList.add("hide");
     }
    });
+  }
+   
+   render(){
+    return(
+      //set user iud to use with the users Email------
+    <div className="main-container">
+      
+      <h2>Login Form</h2>
 
-   //set user iud to use with the users Email------
-    <h2>Login Form</h2>
+      <form id='form'>
 
-    <form id='form'>
+        <div className="container">
+          <label><b>Username</b></label>
+        <input id="txtEmail" type="text" value="" placeholder="Enter Username" name="uname" required />
 
-      <div className="container">
-        <label><b>Username</b></label>
-      <input id="txtEmail" type="text" value="" placeholder="Enter Username" name="uname" required />
+        <label><b>Password</b></label>
+          <input id="txtPassword" type="password" value="" placeholder="Enter Password" name="psw" required />
+          
+          <button id="btnLogin" class="btn btn-action" >Login</button>
 
-      <label><b>Password</b></label>
-        <input id="txtPassword" type="password" value="" placeholder="Enter Password" name="psw" required />
-        
-        <button id="btnLogin" class="btn btn-action" >Login</button>
+          <button id="btnSignUp" class="btn btn-secondary">SignUp</button>
 
-        <button id="btnSignUp" class="btn btn-secondary">SignUp</button>
+          <button id="btnLogout" class="btn btn-action hide">Log Out</button>
 
-        <button id="btnLogout" class="btn btn-action hide">Log Out</button>
+        </div>
 
-      </div>
-
-    </form>
+      </form>
+    </div>
 
     );
   }
 }
-module.exports = Welcome; 
+
+   
+export default Welcome; 
 
 
