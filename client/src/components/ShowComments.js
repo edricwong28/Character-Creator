@@ -163,7 +163,7 @@ class ShowComments extends Component {
 
 	};
 
-	// Formats date from Date timestamp
+	// //Formats date from Date timestamp
 	// formatDate(timestamp) {
 	// 	return Moment(timestamp).format("hh:mma MM/DD/YYYY");
 	// };

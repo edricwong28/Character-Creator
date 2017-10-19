@@ -242,6 +242,11 @@ span.psw {
     width: 80%;
 }
 
-#edit {
+.characterForm, .container {
+    width: 100%;
+}
+
+.smallBtn {
     width: 100px;
+    margin-left: 10px;
 }

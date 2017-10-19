@@ -269,62 +269,62 @@ class CharacterForm extends Component {
   // Renders the form to the page using the state
   render() {
     return (
-      <div className="edit">
-      <div className="container text-center edit">
-        <div className="panel panel-default">
+      <div className="characterForm">
+        <div className="container text-center">
+          <div className="panel panel-default">
 
-          <div className="panel-heading panel-heading-custom">
-            {this.props.characterKey ? (
-              <h1 className="panel-title"> Edit </h1>
-              ) : (
-              <h1 className="panel-title"> Create </h1>
-              )
-            }
-          </div>
+            <div className="panel-heading panel-heading-custom">
+              {this.props.characterKey ? (
+                <h1 className="panel-title"> Edit </h1>
+                ) : (
+                <h1 className="panel-title"> Create </h1>
+                )
+              }
+            </div>
 
-          <div className="panel-body">
+            <div className="panel-body">
 
-            {this.createForm()}
+              {this.createForm()}
 
-            <form id="radios">
-              <label className="checkbox-inline">
-                <input type="radio" name="privacy" value="private" onChange={this.handleInputChange} /> private 
-              </label>
-              <label className="checkbox-inline">
-                <input type="radio" name="privacy" value="public" onChange={this.handleInputChange} /> public
-              </label>
-            </form>
+              <form id="radios">
+                <label className="checkbox-inline">
+                  <input type="radio" name="privacy" value="private" onChange={this.handleInputChange} /> private 
+                </label>
+                <label className="checkbox-inline">
+                  <input type="radio" name="privacy" value="public" onChange={this.handleInputChange} /> public
+                </label>
+              </form>
 
-            {this.props.characterKey ? (
-              <div>
+              {this.props.characterKey ? (
+                <div>
+                  <button className="btn btn-primary"  
+                    onClick={this.handleEdit}>Edit</button>
+
+                  <ShowComments userKey={this.props.userKey} characterKey={this.props.characterKey} purpose="editing"/>
+                </div>
+                ) : (
                 <button className="btn btn-primary"  
-                  onClick={this.handleEdit}>Edit</button>
+                  onClick={this.handleCreation}>Create</button>
+                )
+              }
 
-                <ShowComments userKey={this.props.userKey} characterKey={this.props.characterKey} purpose="editing"/>
-              </div>
-              ) : (
-              <button className="btn btn-primary"  
-                onClick={this.handleCreation}>Create</button>
-              )
-            }
+              <form>
 
-            <form>
+                <div className="form-group">
+                    <label htmlFor="newProperty">Property</label>
+                    <input className="form-control" name="newProperty" type="text" 
+                    onChange={this.handleInputChange}
+                    value={this.state.newProperty}/>
+                </div>
 
-              <div className="form-group">
-                  <label htmlFor="newProperty">Property</label>
-                  <input className="form-control" name="newProperty" type="text" 
-                  onChange={this.handleInputChange}
-                  value={this.state.newProperty}/>
-              </div>
+                <button className="btn btn-primary" type="submit"  
+                onClick={this.addProperty}>Add Property</button>
 
-              <button className="btn btn-primary" type="submit"  
-              onClick={this.addProperty}>Add Property</button>
+              </form>
 
-            </form>
-
+            </div>
           </div>
         </div>
-      </div>
       </div>
     );
   }

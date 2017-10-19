@@ -145,6 +145,14 @@ database.ref("characters").on("child_added",function(user) {
 		// console.log(nextChar);
 		database.ref(`allCharacters/${char.key}`).update(nextChar);
 	});
+
+	database.ref(`characters/${user.key}`).on("child_removed",function(char) {
+		database.ref(`allCharacters/${char.key}`).remove();
+	});
+});
+
+database.ref("users").on("child_removed",function(user) {
+	database.ref(`characters/${user.key}`).remove();
 });
 
 // database.ref("allCharacters").orderByChild("updatedAt")

@@ -234,11 +234,15 @@ class Main extends Component {
 					</div>
 
 		    		{this.state.userKey === undefined ?(
-		    			<div>
+		    			<div className="container text-center edit">
 
-			    			<h1>Login</h1>
+		    				<div className="panel panel-default">
 
-			    			<div>
+		    				<div className="panel-heading panel-heading-custom">
+		    					<h1>Login</h1>
+		    				</div>
+
+			    			<div className="panel-body">
 				    			<form onSubmit={this.logInUser}>
 				    				<div className="form-group">
 				    					<label htmlFor="email">Email address</label>
@@ -250,15 +254,20 @@ class Main extends Component {
 				    					<input type="password" className="form-control" ref="loginPassword" />
 				    				</div>
 
-				    				<button type="submit" className="btn btn-primary">Login</button>
+				    				<button type="submit" className="btn btn-primary smallBtn pull-left">Login</button>
 
 				    				{this.displayError(this.state.loginError)}
 				    			</form>
 			    			</div>
+			    			</div>
 
-			    			<h1>Register</h1>
+			    			<div className="panel panel-default">
 
-			    			<div>
+			    			<div className="panel-heading panel-heading-custom">
+		    					<h1>Register</h1>
+		    				</div>
+
+			    			<div className="panel-body">
 				    			<form onSubmit={this.registeringUser}>
 
 				    				<div className="form-group">
@@ -276,12 +285,15 @@ class Main extends Component {
 				    					<input type="password" className="form-control" ref="regPassword" />
 				    				</div>
 
-				    				<button type="submit" className="btn btn-primary">Register</button>
+				    				<button type="submit" className="btn btn-primary smallBtn pull-left">Register</button>
 
 				    				{this.displayError(this.state.regError)}
 				    			</form>
 			    			</div>
+
+			    			</div>
 			    		</div>
+
 		    		):(
 		    			
 			    			<div>
