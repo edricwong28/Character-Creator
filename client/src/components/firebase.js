@@ -140,10 +140,15 @@ database.ref("characters").on("child_changed",function(user) {
 database.ref("characters").on("child_added",function(user) {
 	// console.log(user.key);
 	database.ref(`characters/${user.key}`).on("child_added",function(char) {
-		let nextChar = char.val();
-		nextChar.userKey = user.key;
-		// console.log(nextChar);
-		database.ref(`allCharacters/${char.key}`).update(nextChar);
+		let thisChar = char.val();
+		thisChar.userKey = user.key;
+		// console.log(thisChar);
+		database.ref(`allCharacters/${char.key}`).update(thisChar);
+
+		database.ref(`characters/${user.key}/${char.key}`).on("child_removed", function(trait) {
+			// console.log(trait.val());
+			database.ref(`allCharacters/${char.key}/${trait.key}`).remove();
+		});
 	});
 
 	database.ref(`characters/${user.key}`).on("child_removed",function(char) {
