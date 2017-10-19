@@ -1,11 +1,11 @@
 // Dependencies
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Switch,
-} from 'react-router-dom';
+// import {
+//   BrowserRouter as Router,
+//   Link,
+//   Route,
+//   Switch,
+// } from 'react-router-dom';
 
 import CharacterForm from "./CharacterForm.js";
 import ShowComments from "./ShowComments.js";
@@ -13,7 +13,7 @@ import ShowComments from "./ShowComments.js";
 const database = require("./firebase.js");
 
 // Constants
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key","userName"];
 
 // Displays all user characters or all public characters
 class UserCharacters extends Component {
@@ -160,6 +160,11 @@ class UserCharacters extends Component {
 		return (
 			<div>
 
+			<div className="pure-g">
+				<div className="pure-u-2-3">
+					<div className ="content-wrapper">
+						<div className="content">
+
 				{!this.state.characters.length ?(
 					<p>No characters to display</p>
 				):(<br></br>)}
@@ -180,6 +185,10 @@ class UserCharacters extends Component {
 					              <h1 className="panel-title"> Awaiting Name </h1>
 					              )
 					            }
+
+					            {this.props.viewing ?(
+		          					<h1 className="panel-title"> by {character.userName} </h1>
+		          				):(<div></div>)}
 	          				</div>
 
 	          				<div className="panel-body">
@@ -199,6 +208,11 @@ class UserCharacters extends Component {
 
 				</div> )}
 
+
+			</div>
+												</div>
+											</div>
+										</div>
 			</div>
 				
 		);

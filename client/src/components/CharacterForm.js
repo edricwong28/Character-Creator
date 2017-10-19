@@ -5,7 +5,7 @@ const database = require("./firebase.js");
 
 // Constants
 const DefaultCharacteristics = ["name","age","gender"]; // Every Creation has at least these properties
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key","userName"];
 
 // Form users use to create/edit to character and stores info to the database
 class CharacterForm extends Component {
@@ -189,11 +189,20 @@ class CharacterForm extends Component {
 
     // console.log(output);
 
-    // Pushes character to the database
-    database.ref(`characters/${this.props.userKey}`).push(output).then(function(data) {
-      // console.log(data);
-      database.ref(`characters/${this.props.userKey}/${data.key}`).update({key:data.key});
-    }.bind(this));
+    database.ref(`users/${this.props.userKey}`).once('value').then(user => {
+      if(!user.val()) {
+        console.log("Error");
+      }
+
+      output.userName = user.val().name;
+
+      // Pushes character to the database
+      database.ref(`characters/${user.val().key}`).push(output).then(function(data) {
+        // console.log(data);
+        database.ref(`characters/${user.val().key}/${data.key}`).update({key:data.key});
+      });
+
+    });
 
     // Sets each property in the state to empty string
     let empty = {};
@@ -251,7 +260,7 @@ class CharacterForm extends Component {
     // Updates character in the database
     database.ref(`characters/${this.props.userKey}/${this.props.characterKey}`).update(output).then(() => {
       database.ref(`allCharacters/${this.props.characterKey}`).update(output).then(() => {
-        window.location.reload();
+        window.location.href = window.location;
       });
     });
   };
@@ -260,7 +269,8 @@ class CharacterForm extends Component {
   // Renders the form to the page using the state
   render() {
     return (
-      <div>
+      <div className="edit">
+      <div className="container text-center edit">
         <div className="panel panel-default">
 
           <div className="panel-heading panel-heading-custom">
@@ -276,9 +286,13 @@ class CharacterForm extends Component {
 
             {this.createForm()}
 
-            <form>
-              <input type="radio" name="privacy" value="private" onChange={this.handleInputChange} /> private 
-              <input type="radio" name="privacy" value="public" onChange={this.handleInputChange} /> public
+            <form id="radios">
+              <label className="checkbox-inline">
+                <input type="radio" name="privacy" value="private" onChange={this.handleInputChange} /> private 
+              </label>
+              <label className="checkbox-inline">
+                <input type="radio" name="privacy" value="public" onChange={this.handleInputChange} /> public
+              </label>
             </form>
 
             {this.props.characterKey ? (
@@ -286,7 +300,7 @@ class CharacterForm extends Component {
                 <button className="btn btn-primary"  
                   onClick={this.handleEdit}>Edit</button>
 
-                <ShowComments userKey={this.props.userKey} characterKey={this.props.characterKey} />
+                <ShowComments userKey={this.props.userKey} characterKey={this.props.characterKey} purpose="editing"/>
               </div>
               ) : (
               <button className="btn btn-primary"  
@@ -310,6 +324,7 @@ class CharacterForm extends Component {
 
           </div>
         </div>
+      </div>
       </div>
     );
   }

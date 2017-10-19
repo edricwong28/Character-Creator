@@ -4,7 +4,7 @@ import React, { Component } from "react";
 const database = require("./firebase.js");
 
 // Constants
-const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key"];
+const ReservedProperties = ["comments","privacy","updatedAt","createdAt","userKey","key","userName"];
 
 // Displays one character to the user
 class ShowComments extends Component {
@@ -158,7 +158,7 @@ class ShowComments extends Component {
 			// this.setState({
 			// 	comment:""
 			// });
-			window.location.reload();
+			window.location.href = window.location;
 		});
 
 	};
@@ -179,7 +179,7 @@ class ShowComments extends Component {
 	          			<div className="panel-body">
 	          				{this.displayComments(this.state.characterData.comments)}
 
-	          				{this.props.userKey ? (
+	          				{this.props.purpose !== "editing" ? (
 				              <form>
 				              	<input className="form-control" name="comment" type="text" 
 				                  onChange={this.handleInputChange}
@@ -189,7 +189,7 @@ class ShowComments extends Component {
 	              				  onClick={this.uploadComment}>Comment</button>
 				              </form>
 				              ) : (
-				              	<span></span>
+				              	<div></div>
 				              )
 				            }
 	          			</div>
