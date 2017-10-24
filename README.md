@@ -20,14 +20,20 @@ After the user logs in or registers an account, they are brought to the home pag
 
 When the user wants to create a new character, there are given a form to fill out and three default properties. For a character to be submitted, at least one property must be filled out. What's special about this form is that the user can add unique properties for their characters that would be added to the form. A character can be made public or private depending on the user and it affects if other users can see these characters or not. *Some properties are reserved.* Submitting the character adds it to the firebase database.
 
-![Home](/screenshots/placeholder.PNG)
-![Home](/screenshots/placeholder.PNG)
+![NewChar](/screenshots/placeholder.PNG)
+![Created](/screenshots/placeholder.PNG)
+
+The user can see all their characters after clicking the "Your Characters" button. Here the user will see their characters and chracteristics. Users can even leave comments on your own characters to have notes for their private characters or ask for specific feedback from other users.
+
+![YourChar](/screenshots/placeholder.PNG)
+![SelfComment](/screenshots/placeholder.PNG)
 
 When looking at public characters, only characters that were defined public by their creators are displayed. Here, users can view and comment on characters of their choosing.
 
-![Home](/screenshots/placeholder.PNG)
+![Public](/screenshots/placeholder.PNG)
+![Comment](/screenshots/placeholder.PNG)
 
 If you ever wanted to change something about your character based on new ideas or others' input, when viewing your characters, you can click edit for the character you want to update. The edit form uses the create form and fills in the data from the character being edited. You can then fill out this form the same way as if you were creating a character.
 
-![Home](/screenshots/placeholder.PNG)
-![Home](/screenshots/placeholder.PNG)
+![Edit](/screenshots/placeholder.PNG)
+![Update](/screenshots/placeholder.PNG)
