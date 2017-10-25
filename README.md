@@ -2,6 +2,8 @@
 
 management-creator-eed.herokuapp.com
 
+*currently only works on google chrome*
+
 This application is a database storage application for users to store customizable character data for personal use or other users critique.
 
 Technologies: html, css, bootstrap, pure, react.js, javascript, firebase
