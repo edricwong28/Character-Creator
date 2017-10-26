@@ -1,6 +1,6 @@
 # Management-Creator
 
-management-creator-eed.herokuapp.com
+https://management-creator-eed.herokuapp.com/
 
 *currently only works on google chrome*
 
