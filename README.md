@@ -1,4 +1,4 @@
-# Management-Creator
+# Character Management
 Built with React.js, this application is a database storage application for users to store customizable character data for personal use or other users critique.
 
 https://management-creator-eed.herokuapp.com/
