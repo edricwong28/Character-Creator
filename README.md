@@ -17,7 +17,6 @@ After the user logs in or registers an account, they are brought to the home pag
 
 ![Home](/screenshots/Management-Home.PNG)
 
-
 When the user wants to create a new character, there are given a form to fill out and three default properties. For a character to be submitted, at least one property must be filled out. What's special about this form is that the user can add unique properties for their characters that would be added to the form. A character can be made public or private depending on the user and it affects if other users can see these characters or not. *Some properties are reserved.* Submitting the character adds it to the firebase database.
 
 ![NewChar](/screenshots/Management-Create.PNG)
