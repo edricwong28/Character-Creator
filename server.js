@@ -13,11 +13,6 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 app.use(express.static('./public'));
 
-// app.get('/welcome', function(req, res, err){
-// 	res.send(index.html);
-// 		console.log(err)
-// });
-
 app.get('*', function(req, res, err){
 	res.sendFile(__dirname + '/public/html/index.html');
 		console.log(err);
